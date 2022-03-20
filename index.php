@@ -26,12 +26,14 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		// don't make longer urls
 		$url = $full_url = $_GET['url'];
 	} else {
+		// save full_url for name of the svg file
 		$full_url = $_GET['url'];
-		require_once 'connect.php';
 
+		require_once 'connect.php';
 		$select = $db->prepare( 'select set_url(:url)' );
 		$select-> bindParam( ':url', $full_url );
 		$select-> execute();
+
 		//echo $select-> errorInfo()[2];
 		if( $code = $select-> fetchColumn() ) {
 			$url = base_url . $code;
@@ -40,14 +42,15 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		}
 	}
 } else {
+	// nothing to do get the default
 	$url = $full_url = default_url;
 }
 //var_dump($_GET);
 ?><!DOCTYPE html>
-<html>
+<html lang="de">
   <head>
-	<title>QR maker</title>
-	<meta charset="utf-8">
+		<title>QR maker</title>
+		<meta charset="utf-8">
     <script src="lib/qrcode.js" defer></script>
     <style>
       :root {
@@ -83,56 +86,94 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
     </style>
   </head>
 <body>
+
   <h1>QR Code-Generator</h1>
 	<p>URL eingeben und Farben/Grösse einstellen
-	<p>Klick auf QR Code zum Downloaded.
+	<p>Klick auf QR Code für Download.
 	<p>Kürzen mit Enter-Taste. Gekürzt werden nur längere URLs.
   <form id="form-container" method="get">
-  <label for="url">URL:</label></label><input type="text" id="url" name="url" value="<?=$url?>" onchange="doQR();">
-  <span>Kürzen mit Enter</span>
-	<div><input type=submit value="Kürzen" id="shorten" data-full-url="<?=$full_url?>"><br/> Nur ab gewisse Länge.</div>
-  <label for="bg-color">Hintergrundfarbe:</label><input type="color" id="bg-color" value="#FFD700" onchange="doQR();">
-  <label for="color">Farbe:</label><input type="color" id="color" value="#0057B8" onchange="doQR();">
-  <label for="size">Grösse</label><input type="range" id="size" min="50" max="500" value="100" onchange="doQR();">
-  <span></span><button id="do-qr">OK</button>
-  <span>QR-Code</span>
-	<a href='' onclick='downloadSVG();'><div id="container"></div></a>
+  	
+		<label for="url">URL:</label>
+		<input type="text" id="url" name="url" value="<?=$url?>" onchange="doQR();">
+  	
+		<span>Kürzen mit Enter</span>
+		<div>
+			<input type=submit value="Kürzen" id="shorten" data-full-url="<?=$full_url?>"><br/>
+			Nur ab gewisse Länge.
+		</div>
+  	
+		<label for="bg-color">Hintergrundfarbe:</label>
+		<input type="color" id="bg-color" value="#FFD700" onchange="doQR();">
+  	
+		<label for="color">Farbe:</label>
+		<input type="color" id="color" value="#0057B8" onchange="doQR();">
+  	
+		<label for="size">Grösse</label>
+		<input type="range" id="size" min="50" max="500" value="100" onchange="doQR();">
+
+  	<span></span>
+		<button id="do-qr">OK</button>
+
+		<span>QR-Code</span>
+		<a href='' onclick='downloadSVG();'><div id="container"></div></a>
+
   </form>
 
-</body>
 <script>
   document.addEventListener("DOMContentLoaded", ev => {
-    document.getElementById("do-qr").onclick = doQR;
-		// initial set
+
+		// initial qr
 		doQR();
-		const url = document.getElementById('url');
+
+		// set the handler for the ok button
+    document.getElementById("do-qr").onclick = doQR;
+
 		// select all on focus
+		const url = document.getElementById('url');
 		url.addEventListener( 'focus', ev=> ev.target.select() );
 
+		// clear query_string
 		history.pushState( {}, '', '/' );
 		url.select();
 		url.focus();
+
   });
   
+	/**
+	 * shorten a url by creating a server request.
+	 */
   const doShorten = ev => {
+
 	  const url = document.getElementById('url').value;
 	  window.location.assign = `<?=base_url?>/?url=${url}`;
 	  window.location.reload( );
+
   };
+
+	/**
+	 * create a qr code of the contents of url
+	 */
   const doQR = ev => {
-	const url = document.getElementById('url').value;
-	if( url.length === 0 ) return;
-    let qrcode = new QRCode({
-      content: url,
-      padding: 2,
-      width: document.getElementById('size').value, height: document.getElementById('size').value,
-      join: false,
-      color: document.getElementById('color').value,
-      background: document.getElementById('bg-color').value,
-      ecl: "L"
-    });
-    document.getElementById("container").innerHTML = qrcode.svg();
-  };
+		const url = document.getElementById('url').value;
+
+		if( url.length === 0 ) return; // no url, stop
+
+		let qrcode = new QRCode({
+			content: url,
+			padding: 2,
+			width: document.getElementById('size').value, height: document.getElementById('size').value,
+			join: false,
+			color: document.getElementById('color').value,
+			background: document.getElementById('bg-color').value,
+			ecl: "L"
+		});
+
+		document.getElementById("container").innerHTML = qrcode.svg();
+	};
+
+	/**
+	 * create a download link
+	 */
   const downloadSVG = ()=> {
 	  const svg = document.getElementById('container').outerHTML;
 	  const blob = new Blob([svg.toString()]);
@@ -150,4 +191,5 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 	  element.remove();
 	}
 </script>
+</body>
 </html>
