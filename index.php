@@ -1,15 +1,13 @@
 <?php declare(strict_types=1);
 
 define('base_url', 'https://qr.sbw.media/');
+define('default_url', 'https://sbw.media');
+
 if( array_key_exists( 'code', $_GET ) ) {
-	$db = new PDO
-		( 'mysql:host=localhost;dbname=plc_qr-code'
-		, 'plc_qr-code'
-		, 'plc_qr-code'
-		);
-	
-	$select = $db->prepare('select get_url(:code)');
-	$select-> bindValue(':code', $_GET['code']);
+	require_once 'connect.php';
+
+	$select = $db->prepare( 'select get_url(:code)' );
+	$select-> bindValue( ':code', $_GET['code'] );
 	if( $select-> execute() && ($url = $select-> fetchColumn() ) ) {
 		header("Cache-Control: no-cache");
 		header("Pragma: no-cache");
@@ -29,29 +27,26 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		$url = $full_url = $_GET['url'];
 	} else {
 		$full_url = $_GET['url'];
-		$db = new PDO
-			( 'mysql:host=localhost;dbname=plc_qr-code'
-			, 'plc_qr-code'
-			, 'plc_qr-code'
-			);
-		$select = $db->prepare('select set_url(:url)');
-		$select-> bindParam(':url', $full_url);
+		require_once 'connect.php';
+
+		$select = $db->prepare( 'select set_url(:url)' );
+		$select-> bindParam( ':url', $full_url );
 		$select-> execute();
 		//echo $select-> errorInfo()[2];
 		if( $code = $select-> fetchColumn() ) {
 			$url = base_url . $code;
 		} else {
-			$url = "https://sbw.media";
+			$url = default_url;
 		}
 	}
 } else {
-	$url = $full_url = "https://sbw.media";
+	$url = $full_url = default_url;
 }
 //var_dump($_GET);
 ?><!DOCTYPE html>
 <html>
   <head>
-	<title>SBW QR maker</title>
+	<title>QR maker</title>
 	<meta charset="utf-8">
     <script src="lib/qrcode.js" defer></script>
     <style>
@@ -61,12 +56,14 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
         background-color: white;
         color: black;
       }
+
       #form-container {
         max-width: 300px;
         display: grid;
         grid-template-columns: 120px 1fr;
-		grid-row-gap: 1em;
+				grid-row-gap: 1em;
       }
+
       input:not([type=submit]) {
         color: inherit;
         background-color: inherit;
@@ -79,6 +76,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
       input:focus {
         background-color: inherit;
       }
+
       #container {
         margin: 0 auto;
       }
@@ -105,19 +103,20 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 <script>
   document.addEventListener("DOMContentLoaded", ev => {
     document.getElementById("do-qr").onclick = doQR;
-	doQR();
-	const url = document.getElementById('url');
-	url.addEventListener('focus', ev=> ev.target.select());
-	//url.selectionStart = 0;
-    //url.selectionEnd = url.value.length;
-	history.pushState({},'','/');
-	url.select();
-	url.focus();
+		// initial set
+		doQR();
+		const url = document.getElementById('url');
+		// select all on focus
+		url.addEventListener( 'focus', ev=> ev.target.select() );
+
+		history.pushState( {}, '', '/' );
+		url.select();
+		url.focus();
   });
   
   const doShorten = ev => {
 	  const url = document.getElementById('url').value;
-	  window.location.assign = `https://qr.sbw.media/?url=${url}`;
+	  window.location.assign = `<?=base_url?>/?url=${url}`;
 	  window.location.reload( );
   };
   const doQR = ev => {
@@ -142,8 +141,10 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 	    const encode = new URL('', document.getElementById('shorten').dataset.fullUrl);
 	    element.download = encode.hostname.replaceAll('.','_') + ".svg";
 	  } catch {
-		element.download = 'qr.svg';
+			// probably don't have a url
+			element.download = 'qr.svg';
 	  }
+
 	  element.href = window.URL.createObjectURL(blob);
 	  element.click();
 	  element.remove();

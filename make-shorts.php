@@ -18,13 +18,11 @@ function getCode(): string {
   return $result;
 }
 
-
-$db = new \PDO
-	( 'mysql:dbname=plc_qr-code'
-	, "plc_qr-code"
-	, 'plc_qr-code'
-	);
-$insert = $db-> prepare("insert into code(code,url,last_used,hits)values(:code,null,default,default)");
+require_once 'connect.php';
+$insert = $db-> prepare("
+insert into
+    code( code,  url,  last_used, hits)
+  values(:code, null, default,    default)");
 $code = getCode();
 $insert->bindParam(':code',$code);
 
