@@ -69,5 +69,6 @@ begin
 end ;;
 ```
 # Thirds
-The qr svg generator is [davidshimjs/qrcodejs](https://github.com/davidshimjs/qrcodejs)
+The qr svg generator is [davidshimjs/qrcodejs](https://github.com/davidshimjs/qrcodejs).
+Very, very losely based on [heytuts](https://heytuts.com/web-dev/php/create-a-url-shortener-using-php)
 
