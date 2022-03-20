@@ -68,6 +68,6 @@ begin
   return result;
 end ;;
 ```
-
-
+# Thirds
+The qr svg generator is [davidshimjs/qrcodejs](https://github.com/davidshimjs/qrcodejs)
 
