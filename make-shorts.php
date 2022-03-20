@@ -1,14 +1,13 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
+// Allow this characters
 $charset ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNAOPQRSTUVWXYZ1234567890-_.!~*'()";
-$size = 8;
 
 function getCode(): string {
-  global $size;
   global $charset;
   $length = strlen($charset)-1;
 
+  // short code is 5 characters. When changed, also change the database!
   $result
 	= $charset[rand(0,$length)]
  	. $charset[rand(0,$length)]
