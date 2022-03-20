@@ -1,6 +1,6 @@
 # QR Code generator and url shortener
 ## Setup
-Decide on the length of the code. Currently 5 characters. This has to be changed in the code table and the two stored functions.
+Decide on the length of the codes. Currently 5 characters. This has to be changed in the `code` table and the two stored functions `set_url` and `get_url`.
 
 ### Database
 In `connect.php` the database connection is configured. 
@@ -8,7 +8,7 @@ In `connect.php` the database connection is configured.
 ### urls
 In `input.php` two urls need to be configured, the base for the qr codes and the default when opening. The later maybe empty.
 
-## DB - setup
+## DB – setup
 The main table for code/url translation
 
 ### table and view
