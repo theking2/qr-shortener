@@ -1,9 +1,17 @@
-# qr-shortener
+# QR Code generator and url shortener
+## Setup
+Decide on the length of the codes. Currently 5 characters. This has to be changed in the `code` table and the two stored functions `set_url` and `get_url`.
 
-# DB - setup
+### Database
+In `connect.php` the database connection is configured. 
+
+### urls
+In `input.php` two urls need to be configured, the base for the qr codes and the default when opening. The later maybe empty.
+
+## DB – setup
 The main table for code/url translation
 
-## table and view
+### table and view
 ```
 create table `code` (
   `code` char(5) character set ascii collate ascii_bin not null,
@@ -23,7 +31,7 @@ select
 , count(0) AS `total` from `code`
 ```
 
-## routines
+### routines
 Routine to get a url based on the code, updating hit and last_used.
 ```
 create function `get_url`(`c` char(5)) returns varchar(255) charset utf8
@@ -60,6 +68,7 @@ begin
   return result;
 end ;;
 ```
-
-
+# Thirds
+The qr svg generator is [davidshimjs/qrcodejs](https://github.com/davidshimjs/qrcodejs).
+Very, very losely based on [heytuts](https://heytuts.com/web-dev/php/create-a-url-shortener-using-php)
 
