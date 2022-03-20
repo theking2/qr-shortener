@@ -100,7 +100,6 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		<span>Kürzen mit Enter</span>
 		<div>
 			<input type=submit value="Kürzen" id="shorten" data-full-url="<?=$full_url?>"><br/>
-			Nur ab gewisse Länge.
 		</div>
   	
 		<label for="bg-color">Hintergrundfarbe:</label>
