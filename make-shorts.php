@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 // Allow this characters
-$charset ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNAOPQRSTUVWXYZ1234567890-_.!~*'()";
+$charset ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNAOPQRSTUVWXYZ1234567890-_.!~*'()|";
 
 function getCode(): string {
   global $charset;
