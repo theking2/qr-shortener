@@ -103,10 +103,10 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		</div>
   	
 		<label for="bg-color">Hintergrundfarbe:</label>
-		<input type="color" id="bg-color" value="#FFD700" onchange="doQR();">
+		<input type="color" id="bg-color" value="#8cbf35" onchange="doQR();">
   	
 		<label for="color">Farbe:</label>
-		<input type="color" id="color" value="#0057B8" onchange="doQR();">
+		<input type="color" id="color" value="#000000" onchange="doQR();">
   	
 		<label for="size">Grösse</label>
 		<input type="range" id="size" min="50" max="500" value="100" onchange="doQR();">
