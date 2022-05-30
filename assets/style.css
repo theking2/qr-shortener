@@ -1,0 +1,30 @@
+:root {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: small;
+  background-color: white;
+  color: black;
+}
+
+#form-container {
+  max-width: 300px;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  grid-row-gap: 1em;
+}
+
+input:not([type=submit]) {
+  color: inherit;
+  background-color: inherit;
+  border-color: white;
+  border-style: ridge;
+  border-width: 1px;
+  border-radius: 3px;
+}
+
+input:focus {
+  background-color: inherit;
+}
+
+#container {
+  margin: 0 auto;
+}

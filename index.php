@@ -52,39 +52,8 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		<title>QR maker</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="lib/qrcode.js" defer></script>
-    <style>
-      :root {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-size: small;
-        background-color: white;
-        color: black;
-      }
-
-      #form-container {
-        max-width: 300px;
-        display: grid;
-        grid-template-columns: 120px 1fr;
-				grid-row-gap: 1em;
-      }
-
-      input:not([type=submit]) {
-        color: inherit;
-        background-color: inherit;
-        border-color: white;
-        border-style: ridge;
-        border-width: 1px;
-        border-radius: 3px;
-      }
-
-      input:focus {
-        background-color: inherit;
-      }
-
-      #container {
-        margin: 0 auto;
-      }
-    </style>
+    <script src="./lib/qrcode.js" defer></script>
+		<link rel="stylesheet" href="./assets/style.css">
   </head>
 <body>
 
@@ -95,7 +64,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
   <form id="form-container" method="get">
   	
 		<label for="url">URL:</label>
-		<input type="text" id="url" name="url" value="<?=$url?>" onchange="doQR();">
+		<input type="text" id="url" name="url" value="<?=$url?>">
   	
 		<span>Kürzen mit Enter</span>
 		<div>
@@ -103,93 +72,22 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		</div>
   	
 		<label for="bg-color">Hintergrundfarbe:</label>
-		<input type="color" id="bg-color" value="#8cbf35" onchange="doQR();">
+		<input type="color" id="bg-color" value="#8cbf35">
   	
 		<label for="color">Farbe:</label>
-		<input type="color" id="color" value="#000000" onchange="doQR();">
+		<input type="color" id="color" value="#000000">
   	
 		<label for="size">Grösse</label>
-		<input type="range" id="size" min="50" max="500" value="100" onchange="doQR();">
+		<input type="range" id="size" min="50" max="500" value="100">
 
   	<span></span>
 		<button id="do-qr">OK</button>
 
 		<span>QR-Code</span>
-		<a href='' onclick='downloadSVG();'><div id="container"></div></a>
+		<a href=''><div id="container"></div></a>
 
   </form>
+	<script src="./assets/main.js"></script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", ev => {
-
-		// initial qr
-		doQR();
-
-		// set the handler for the ok button
-    document.getElementById("do-qr").onclick = doQR;
-
-		// select all on focus
-		const url = document.getElementById('url');
-		url.addEventListener( 'focus', ev=> ev.target.select() );
-
-		// clear query_string
-		history.pushState( {}, '', '/' );
-		url.select();
-		url.focus();
-
-  });
-  
-	/**
-	 * shorten a url by creating a server request.
-	 */
-  const doShorten = ev => {
-
-	  const url = document.getElementById('url').value;
-	  window.location.assign = `<?=base_url?>/?url=${url}`;
-	  window.location.reload( );
-
-  };
-
-	/**
-	 * create a qr code of the contents of url
-	 */
-  const doQR = ev => {
-		const url = document.getElementById('url').value;
-
-		if( url.length === 0 ) return; // no url, stop
-
-		let qrcode = new QRCode({
-			content: url,
-			padding: 2,
-			width: document.getElementById('size').value, height: document.getElementById('size').value,
-			join: false,
-			color: document.getElementById('color').value,
-			background: document.getElementById('bg-color').value,
-			ecl: "L"
-		});
-
-		document.getElementById("container").innerHTML = qrcode.svg();
-	};
-
-	/**
-	 * create a download link
-	 */
-  const downloadSVG = ()=> {
-	  const svg = document.getElementById('container').outerHTML;
-	  const blob = new Blob([svg.toString()]);
-	  const element = document.createElement("a");
-	  try {
-	    const encode = new URL('', document.getElementById('shorten').dataset.fullUrl);
-	    element.download = encode.hostname.replaceAll('.','_') + ".svg";
-	  } catch {
-			// probably don't have a url
-			element.download = 'qr.svg';
-	  }
-
-	  element.href = window.URL.createObjectURL(blob);
-	  element.click();
-	  element.remove();
-	}
-</script>
 </body>
 </html>
