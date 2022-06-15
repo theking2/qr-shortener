@@ -1,24 +1,29 @@
 <?php declare(strict_types=1);
 
-define('base_url', 'https://qr.sbw.media/');
-define('default_url', 'https://sbw.media');
-
 if( array_key_exists( 'code', $_GET ) ) {
 	require_once 'connect.php';
 
-	$select = $db->prepare( 'select get_url(:code)' );
-	$select-> bindValue( ':code', $_GET['code'] );
-	if( $select-> execute() && ($url = $select-> fetchColumn() ) ) {
-		header("Cache-Control: no-cache");
-		header("Pragma: no-cache");
+	$select = $db-> prepare( 'select get_url(:code)' );
+	try {
+		if( $select-> execute(['code'=>$_GET['code']]) && ($url = $select-> fetchColumn() ) ) {
+			$select = $db = null;
 
-		header("Location: " . $url);
-		die();
-	} else {
-		header("HTTP/1.1 404 Not Found");
-		die('invalid code');
+			header("Cache-Control: no-cache");
+			header("Pragma: no-cache");
+			header("Location: " . $url);
+			exit();
+		} else {
+			header("HTTP/1.1 404 Not Found");
+			exit('<h1>404 Not Found');
+		}
+	} catch( PDOException $e ) {
+		header("HTTP/1.1 500 Internal Server Error");
+		exit('<h1>500 Internal Server Error');
 	}
 }
+
+define('base_url', 'https://qr.sbw.media/');
+define('default_url', 'https://sbw.media');
 
 // test for url but ignore our own
 if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) ) {
