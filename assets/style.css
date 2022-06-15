@@ -44,16 +44,21 @@ input:focus {
     grid-template-columns: 100%;
     justify-items: center;
   }
-  input[type=color] {
-    width: 33%;
-    height: 3em;
+
+  input, button {
+    font-size: 1.2em;
   }
 
   input:not([type=submit]) {
     width: 100%;
   }
 
+  input[type=color] {
+    width: 33%;
+    height: 3rem;
+  }
+
   p {
-    margin:0.2em;
+    margin:0.2rem;
   }
 }
