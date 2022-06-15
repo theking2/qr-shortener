@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-$db = new \PDO
-	( 'mysql:dbname=plc_qr-code'
-	, "plc_qr-code"
-	, 'plc_qr-code'
-	, [PDO::ATTR_PERSISTENT => true]
-	);
+$db = new \mysqli(
+	$settings['db']['server'],
+	$settings['db']['user'],
+	$settings['db']['passwort'],
+	$settings['db']['name']
+	) or die('Could not connect to database');
+$db-> set_charset( 'utf8mb4' );

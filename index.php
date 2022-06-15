@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+require_once 'settings.php';
 
 if( array_key_exists( 'code', $_GET ) ) {
 	require_once 'connect.php';
@@ -22,8 +23,8 @@ if( array_key_exists( 'code', $_GET ) ) {
 	}
 }
 
-define('base_url', 'https://qr.sbw.media/');
-define('default_url', 'https://sbw.media');
+define('base_url', $settings['base_url']);
+define('default_url', $settings['default_url']);
 
 // test for url but ignore our own
 if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) ) {
@@ -37,8 +38,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 
 		require_once 'connect.php';
 		$select = $db->prepare( 'select set_url(:url)' );
-		$select-> bindParam( ':url', $full_url );
-		$select-> execute();
+		$select-> execute(['url'=>$full_url]);
 
 		//echo $select-> errorInfo()[2];
 		if( $code = $select-> fetchColumn() ) {
