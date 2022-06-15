@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-$db = new \mysqli(
-	$settings['db']['server'],
+$db = new \PDO(
+	'mysql:server='.$settings['db']['server'].';dbname='.$settings['db']['name'],	
 	$settings['db']['user'],
 	$settings['db']['passwort'],
-	$settings['db']['name']
-	) or die('Could not connect to database');
-$db-> set_charset( 'utf8mb4' );
+	[PDO::ATTR_PERSISTENT => true]
+) or exit('Could not connect to database');
+

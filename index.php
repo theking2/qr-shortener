@@ -37,6 +37,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		$full_url = $url;
 
 		require_once 'connect.php';
+
 		$select = $db->prepare( 'select set_url(:url)' );
 		$select-> execute(['url'=>$full_url]);
 
