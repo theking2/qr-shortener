@@ -71,7 +71,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
   <form id="form-container" method="get">
   	
 		<label for="url">URL:</label>
-		<input type="text" id="url" name="url" value="<?=$url?>">
+		<input type="url" id="url" name="url" value="<?=$url?>">
   	
 		<span>Kürzen mit Enter</span>
 		<div>
