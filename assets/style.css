@@ -36,6 +36,7 @@ input:focus {
 @media screen and (max-width: 600px) {
   :root {
     font-size: large;
+    text-align: center;
   }
   #form-container {
     max-width: 100%;
@@ -44,7 +45,15 @@ input:focus {
     justify-items: center;
   }
   input[type=color] {
-    width: 25%;
-    height: 2em;
+    width: 33%;
+    height: 3em;
+  }
+
+  input:not([type=submit]) {
+    width: 100%;
+  }
+
+  p {
+    margin:0.2em;
   }
 }
