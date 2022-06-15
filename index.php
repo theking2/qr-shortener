@@ -22,12 +22,13 @@ if( array_key_exists( 'code', $_GET ) ) {
 
 // test for url but ignore our own
 if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) ) {
-	if(strlen($_GET['url']) < strlen(base_url)+5) {
+	$url = trim($_GET['url']);
+	if( strlen($url) < strlen(base_url)+5 ) {
 		// don't make longer urls
-		$url = $full_url = $_GET['url'];
+		$full_url = $url;
 	} else {
 		// save full_url for name of the svg file
-		$full_url = $_GET['url'];
+		$full_url = $url;
 
 		require_once 'connect.php';
 		$select = $db->prepare( 'select set_url(:url)' );
@@ -84,7 +85,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		<button id="do-qr">OK</button>
 
 		<span>QR-Code</span>
-		<a href=''><div id="container"></div></a>
+		<div id="container"></div>
 
   </form>
 	<script src="./assets/main.js"></script>
