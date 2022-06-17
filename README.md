@@ -2,6 +2,19 @@
 ## Setup
 Decide on the length of the codes. Currently 5 characters. This has to be changed in the `code` table and the two stored functions `set_url` and `get_url`.
 
+### Configuration
+Sample contents of the `app.conf` file in the root
+```
+base_url = https://qr.fab.io/
+default_url = https://cie.fabulous.com
+
+[db]
+server = p:localhost #prepent with p: for persistant
+name = dbname
+user = dbusername
+passwort = dbpassword
+
+```
 ### Database
 In `app.conf` the database connection is configured. 
 
