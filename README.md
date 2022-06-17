@@ -3,10 +3,12 @@
 Decide on the length of the codes. Currently 5 characters. This has to be changed in the `code` table and the two stored functions `set_url` and `get_url`.
 
 ### Database
-In `connect.php` the database connection is configured. 
+In `app.conf` the database connection is configured. 
 
 ### urls
-In `input.php` two urls need to be configured, the base for the qr codes and the default when opening. The later maybe empty.
+In `app.conf` two urls need to be configured, the base for the qr codes and the default when opening. make sure there is a __trailing /__!.
+
+The later maybe empty but contains the default value for url
 
 ## DB – setup
 The main table for code/url translation
