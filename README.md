@@ -9,10 +9,10 @@ base_url = https://qr.fab.io/
 default_url = https://cie.fabulous.com
 
 [db]
-server = p:localhost #prepent with p: for persistant
+server = localhost
 name = dbname
-user = dbusername
-passwort = dbpassword
+user = dbuser
+passwort = dbpass
 
 ```
 ### Database
