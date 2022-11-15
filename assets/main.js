@@ -73,7 +73,7 @@ const doQR = ev => {
  * create a download link
  */
 const downloadSVG = () => {
-  const svg = $('#container').outerHTML;
+  const svg = $('#container').children[0].outerHTML;
   const blob = new Blob([svg.toString()]);
   const element = document.createElement("a");
   try {
