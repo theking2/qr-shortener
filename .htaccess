@@ -2,12 +2,11 @@
 order allow,deny
 deny from all
 </Files>
+
 # unsafe-inline needed for svg
 Header add Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; "
 
-Options +FollowSymLinks
 RewriteEngine on
-
 # allow the url codes to be sent as get data
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
