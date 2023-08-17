@@ -63,7 +63,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		<link rel="stylesheet" href="./assets/style.css">
   </head>
 <body>
-
+<main>
   <h1>QR Code-Generator</h1>
 	<p>URL eingeben und Farben/Grösse einstellen
 	<p>Klick auf QR Code für Download.
@@ -93,8 +93,20 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 		<span>QR-Code</span>
 		<div id="container"></div>
 
-  </form>
-	<script src="./assets/main.js"></script>
+ 	</form>
+	</main>
+	<section>
+		<h2>Bereits definiert</h2>
+		<table id="codes"><tr><th>code<th>url<?php
+	require_once 'connect.php';
+	foreach($db-> query("select `code`, url from `code` where url is not null order by url") as $code) {
+		echo "<tr><td>" . base_url . $code["code"] . "</td>";
+		echo "<td>". $code["url"] . "</td></tr>";
+	}
+	?></table>
+	</section>
+
+	<script type="module" src="./assets/main.js"></script>
 
 </body>
 </html>

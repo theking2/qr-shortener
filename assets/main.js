@@ -5,7 +5,8 @@
  * @param {Element} [document] base 
  * @returns {(NodeList|Element|null)}
  */
-const $ = (selector, base = document) => {
+
+export const $ = (selector, base = document) => {
 	let elements = base.querySelectorAll(selector);
 	return (elements.length == 1) ? elements[0] : elements;
 }
@@ -23,6 +24,7 @@ document.addEventListener("DOMContentLoaded", ev => {
   $("#color").onchange = doQR;
   $("#size").onchange = doQR;
 
+  $("#codes").onclick = doCodesClick;
 
   // select all on focus
   const url = $('#url');
@@ -43,7 +45,6 @@ const doShorten = ev => {
   const url = $('#url').value;
   window.location.assign = `<?=base_url?>/?url=${url}`;
   window.location.reload();
-
 };
 
 /**
@@ -89,6 +90,10 @@ const downloadSVG = () => {
   element.remove();
 };
 
+const doCodesClick = ev => {
+  $('#url').value = ev.target.textContent;
+  $('#shorten').click();
+};
 /**
  * Read the settings from localStorage
  */

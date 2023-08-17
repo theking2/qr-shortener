@@ -5,6 +5,12 @@
   color: black;
 }
 
+th {
+	text-align: left;
+}
+#codes {
+	max-width: 80%;
+}
 #form-container {
   max-width: 300px;
   display: grid;
