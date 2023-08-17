@@ -66,7 +66,7 @@ if( array_key_exists('url', $_GET) && (false===strpos($_GET['url'], base_url)) )
 <main>
   <h1>QR Code-Generator</h1>
 	<p>URL eingeben und Farben/Grösse einstellen
-	<p>Klick auf QR Code für Download.
+	<p>Klicke auf QR Code für Download.
 	<p>Kürzen mit Enter-Taste. Gekürzt werden nur längere URLs.
   <form id="form-container" method="get">
   	
