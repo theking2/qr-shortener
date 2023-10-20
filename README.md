@@ -1,4 +1,5 @@
 # QR Code generator and url shortener
+(currently deployed at https://qr.sbw.media)
 ## Setup
 Decide on the length of the codes. Currently 5 characters. This has to be changed in the `code` table and the two stored functions `set_url` and `get_url`.
 
